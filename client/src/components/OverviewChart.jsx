@@ -41,6 +41,7 @@ const OverviewChart = ({ isDashboard = false, view }) => {
       { sales: 0, units: 0 }
     );
     return [[totalSalesLine], [totalUnitsLine]];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   if (!data || isLoading) return "Loading...";
