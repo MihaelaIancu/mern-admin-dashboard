@@ -47,7 +47,7 @@ const Product = ({
           {name}
         </Typography>
         <Typography sx={{ mb: "1.5rem" }} color={theme.palette.secondary[400]}>
-          ${Number(price).toFixed()}
+          ${Number(price).toFixed(2)}
         </Typography>
         <Rating value={rating} readOnly />
         <Typography variant="body2">{description}</Typography>
@@ -88,7 +88,7 @@ const Products = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="PRODUCTS" subtitle="See your list of products"></Header>
+      <Header title="PRODUCTS" subtitle="See your list of products" />
       {data || !isLoading ? (
         <Box
           mt="20px"
@@ -100,13 +100,23 @@ const Products = () => {
           sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}
         >
           {data.map(
-            ({ _id, name, description, price, category, supply, stat }) => (
+            ({
+              _id,
+              name,
+              description,
+              price,
+              rating,
+              category,
+              supply,
+              stat,
+            }) => (
               <Product
                 key={_id}
                 _id={_id}
                 name={name}
                 description={description}
                 price={price}
+                rating={rating}
                 category={category}
                 supply={supply}
                 stat={stat}
