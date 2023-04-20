@@ -9,6 +9,8 @@ import clientRoutes from "./routes/client.js";
 import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
 import salesRoutes from "./routes/sales.js";
+import mysql from "mysql";
+import cookieParser from "cookie-parser";
 
 // data imports
 import User from "./models/User.js";
@@ -29,6 +31,7 @@ import AffiliateStat from "./models/AffiliateStat.js";
 // CONFIGURATION
 dotenv.config();
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
@@ -43,8 +46,9 @@ app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
 
-// MONGOOSE SETUP
 const PORT = process.env.PORT || 9000;
+
+// MONGOOSE SETUP
 mongoose.set("strictQuery", true);
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -52,7 +56,9 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    app.listen(PORT, () =>
+      console.log(`Server Port: ${PORT} && MongoDB is connected`)
+    );
     // only add data one time
     // User.insertMany(dataUser);
     // Product.insertMany(dataProduct);
@@ -62,3 +68,16 @@ mongoose
     // AffiliateStat.insertMany(dataAffiliateStat);
   })
   .catch((error) => console.log(`${error} did not connect`));
+
+// MYSQL SETUP
+const con = mysql.createPool({
+  host: "localhost",
+  user: "root",
+  password: "root",
+  database: "test",
+});
+
+con.getConnection(function (err) {
+  if (err) throw err;
+  console.log("MySQL is connected");
+});
