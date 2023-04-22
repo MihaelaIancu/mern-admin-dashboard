@@ -22,7 +22,7 @@ import {
   Menu,
   MenuItem,
   useTheme,
-  Icon,
+  // Icon,
 } from "@mui/material";
 
 const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {

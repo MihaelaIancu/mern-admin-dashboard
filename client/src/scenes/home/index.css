@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,100;1,300;1,400&display=swap");
+
+.main {
+  min-height: 93vh;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  background-image: url("https://unsplash.com/photos/D4LDw5eXhgg/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8MjR8fGRhdGElMjBhbmFseXNpc3xlbnwwfHx8fDE2ODIwNTY5NzY&force=true&w=1920");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.title {
+  font-size: 90px;
+  /* margin-bottom: 25px; */
+}
+
+.subtitle {
+  font-size: 20px;
+  padding-bottom: 10px;
+}
+
+.intro-text {
+  width: 100%;
+  text-align: center;
+}
+
+.intro-text-shadow {
+  border-radius: 8px;
+  background-color: rgba(77, 84, 125, 0.3);
+}
+
+.buttonContainer {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.landingButton {
+  width: 200px;
+  height: 55px;
+}
+
+@media only screen and (min-width: 1200px) {
+  .buttonContainer {
+    padding: 0 200px;
+  }
+  .title {
+    padding: 0 100px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .title {
+    font-size: 60px;
+  }
+  .landingButton {
+    height: 50px;
+    width: 150px;
+  }
+}
