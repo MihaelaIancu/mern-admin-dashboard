@@ -14,6 +14,10 @@ import {
   useTheme,
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login, updateId } from "state";
 
 function Copyright(props) {
   const theme = useTheme();
@@ -36,15 +40,63 @@ function Copyright(props) {
 }
 
 const Login = () => {
+  const history = useNavigate();
+  const dispatch = useDispatch();
+
+  const [inputs, setInputs] = React.useState({
+    email: "",
+    password: "",
+  });
+
+  const [user, setUser] = React.useState("63701cc1f03239b7f700000e");
+
   const theme = useTheme();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const handleChange = (e) => {
+    setInputs((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const sendRequestLogin = async () => {
+    const res = await axios
+      .post("http://localhost:5001/auth/login", {
+        email: inputs.email,
+        password: inputs.password,
+      })
+      .catch((err) => console.log(err));
+
+    const data = await res.data;
+    let id = data.user._id;
+    localStorage.setItem("userId", id);
+
+    return data;
+  };
+
+  // const sendRequestUser = async () => {
+  //   const res = await axios
+  //     .get("http://localhost:5001/auth/user", {
+  //       withCredentials: true,
+  //     })
+  //     .catch((err) => console.log(err));
+
+  //   const data = await res.data;
+  //   return data;
+  // };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // console.log("id to update ", localStorage.getItem("userId"));
+    let userId = localStorage.getItem("userId");
+    // console.log(userId);
+    // let userId = userId;
+
+    //send http request
+    sendRequestLogin()
+      .then(() => dispatch(login()))
+      .then(() => dispatch(updateId(userId)))
+      .then(() => history("/dashboard"));
   };
 
   return (
@@ -94,6 +146,7 @@ const Login = () => {
             sx={{ mt: 1 }}
           >
             <TextField
+              value={inputs.email}
               margin="normal"
               required
               fullWidth
@@ -102,8 +155,10 @@ const Login = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={handleChange}
             />
             <TextField
+              value={inputs.password}
               margin="normal"
               required
               fullWidth
@@ -112,6 +167,7 @@ const Login = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={handleChange}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

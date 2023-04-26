@@ -24,15 +24,41 @@ import {
   useTheme,
   // Icon,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
+import axios from "axios";
+// import { logout } from "state";
+
+axios.defaults.withCredentials = true;
 
 const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = (event) => setAnchorEl(null);
+  const handleLogout = () => {
+    localStorage.removeItem("userId");
+    navigate("/");
+  };
+
+  // const sendRequestLogout = async () => {
+  //   const res = await axios.post("http://localhost:5001/auth/logout", null, {
+  //     withCredentials: true,
+  //   });
+  //   if (res.status === 200) {
+  //     return res;
+  //   }
+  //   return new Error("Unable TO Logout. Please try again");
+  // };
+
+  // const handleLogout = () => {
+  //   sendRequestLogout().then(() => dispatch(logout()));
+  //   console.log("logged out");
+  // };
 
   return (
     <AppBar
@@ -114,14 +140,14 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
             </Button>
             <Menu
               anchorEl={anchorEl}
-              opne={isOpen}
+              open={isOpen}
               onClose={handleClose}
               anchorOrigin={{
                 vertical: "bottom",
                 horizontal: "center",
               }}
             >
-              <MenuItem onClick={handleClose}>Log Out</MenuItem>
+              <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             </Menu>
           </FlexBetween>
         </FlexBetween>

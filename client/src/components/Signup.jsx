@@ -17,11 +17,14 @@ import {
   FormControl,
 } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   const theme = useTheme();
   return (
     <Typography
+      paddingBottom={"15px"}
       variant="body2"
       color={theme.palette.secondary.light}
       align="center"
@@ -38,31 +41,74 @@ function Copyright(props) {
 }
 
 const Signup = () => {
-  const [state, setState] = React.useState({
+  const history = useNavigate();
+
+  const [roles, setRoles] = React.useState({
     admin: true,
     superadmin: false,
     user: false,
   });
 
+  const [inputs, setInputs] = React.useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    phoneNumber: "",
+  });
+
+  const [admins, setAdmins] = React.useState({
+    role: "",
+  });
+
   const theme = useTheme();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
-
   const handleChange = (e) => {
-    setState({
-      //   ...state,
+    setInputs((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+
+    setRoles((prevState) => ({
+      // ...prevState,
       [e.target.name]: e.target.checked,
-    });
+    }));
+
+    handleRoles();
   };
 
-  const { admin, superadmin, user } = state;
+  const sendRequest = async () => {
+    const res = await axios
+      .post("http://localhost:5001/auth/signup", {
+        name: inputs.firstName + " " + inputs.lastName,
+        email: inputs.email,
+        password: inputs.password,
+        phoneNumber: inputs.phoneNumber,
+        role: admins.admin,
+      })
+      .catch((err) => console.log(err));
+
+    const data = await res.data;
+
+    return data;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(inputs);
+
+    //send http request
+    sendRequest().then(() => history("/login"));
+  };
+
+  const handleRoles = () => {
+    roles.user ? setAdmins({ role: "user" }) : setAdmins({ role: "admin" });
+    roles.superadmin
+      ? setAdmins({ role: "superadmin" })
+      : setAdmins({ role: "admin" });
+  };
+
+  const { admin, superadmin, user } = roles;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -89,6 +135,7 @@ const Signup = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
+                value={inputs.firstName}
                 autoComplete="given-name"
                 name="firstName"
                 required
@@ -96,47 +143,57 @@ const Signup = () => {
                 id="firstName"
                 label="First Name"
                 autoFocus
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 required
                 fullWidth
+                value={inputs.lastName}
                 id="lastName"
                 label="Last Name"
                 name="lastName"
                 autoComplete="family-name"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
+                value={inputs.email}
+                type={"email"}
                 id="email"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
+                value={inputs.password}
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
+                value={inputs.phoneNumber}
                 id="phoneNumber"
                 label="Phone Number"
                 name="phoneNumber"
                 autoComplete="phone-number"
+                onChange={handleChange}
               />
             </Grid>
             <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">

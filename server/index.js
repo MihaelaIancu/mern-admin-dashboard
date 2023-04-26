@@ -8,6 +8,7 @@ import morgan from "morgan";
 import clientRoutes from "./routes/client.js";
 import generalRoutes from "./routes/general.js";
 import managementRoutes from "./routes/management.js";
+import authRoutes from "./routes/auth.js";
 import salesRoutes from "./routes/sales.js";
 import mysql from "mysql";
 import cookieParser from "cookie-parser";
@@ -38,13 +39,14 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 // ROUTES
 app.use("/client", clientRoutes);
 app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
+app.use("/auth", authRoutes);
 
 const PORT = process.env.PORT || 9000;
 
