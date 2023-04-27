@@ -16,7 +16,7 @@ export const globalSlice = createSlice({
     },
     login: (state) => {
       state.loggedIn = true;
-      // state.userId = "64448edfce22d72d7e1ca276";
+      state.userId = "64448edfce22d72d7e1ca276";
     },
     updateId: (state, action) => {
       state.userId = action.payload;

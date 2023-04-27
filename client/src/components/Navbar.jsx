@@ -25,7 +25,7 @@ import {
   // Icon,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import { logout } from "state";
 import axios from "axios";
 // import { logout } from "state";
 
@@ -33,32 +33,34 @@ axios.defaults.withCredentials = true;
 
 const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const history = useNavigate();
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = (event) => setAnchorEl(null);
-  const handleLogout = () => {
-    localStorage.removeItem("userId");
-    navigate("/");
+  // const handleLogout = () => {
+  //   localStorage.removeItem("userId");
+  //   navigate("/");
+  // };
+
+  const sendRequestLogout = async () => {
+    const res = await axios.post("http://localhost:5001/auth/logout", null, {
+      withCredentials: true,
+    });
+    if (res.status === 200) {
+      return res;
+    }
+    return new Error("Unable to Logout. Please try again");
   };
 
-  // const sendRequestLogout = async () => {
-  //   const res = await axios.post("http://localhost:5001/auth/logout", null, {
-  //     withCredentials: true,
-  //   });
-  //   if (res.status === 200) {
-  //     return res;
-  //   }
-  //   return new Error("Unable TO Logout. Please try again");
-  // };
-
-  // const handleLogout = () => {
-  //   sendRequestLogout().then(() => dispatch(logout()));
-  //   console.log("logged out");
-  // };
+  const handleLogout = () => {
+    sendRequestLogout()
+      .then(() => dispatch(logout()))
+      .then(() => history("/"));
+    console.log("logged out");
+  };
 
   return (
     <AppBar

@@ -13,13 +13,13 @@ const Home = () => {
             <div className="intro-text-shadow">
               <h1
                 className="title"
-                style={{ color: theme.palette.secondary.light }}
+                style={{ color: theme.palette.secondary[200] }}
               >
                 Welcome to your sales dashboard
               </h1>
               <p
                 className="subtitle"
-                style={{ color: theme.palette.secondary[300] }}
+                style={{ color: theme.palette.secondary[200] }}
               >
                 One safe place for all your transactions.
               </p>

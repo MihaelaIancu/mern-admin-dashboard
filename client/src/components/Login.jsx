@@ -17,7 +17,7 @@ import { LockOutlined } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login, updateId } from "state";
+import { login } from "state";
 
 function Copyright(props) {
   const theme = useTheme();
@@ -48,7 +48,7 @@ const Login = () => {
     password: "",
   });
 
-  const [user, setUser] = React.useState("63701cc1f03239b7f700000e");
+  // const [user, setUser] = React.useState("63701cc1f03239b7f700000e");
 
   const theme = useTheme();
 
@@ -68,8 +68,8 @@ const Login = () => {
       .catch((err) => console.log(err));
 
     const data = await res.data;
-    let id = data.user._id;
-    localStorage.setItem("userId", id);
+    // let id = data.user._id;
+    // localStorage.setItem("userId", id);
 
     return data;
   };
@@ -88,14 +88,14 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // console.log("id to update ", localStorage.getItem("userId"));
-    let userId = localStorage.getItem("userId");
+    // let userId = localStorage.getItem("userId");
     // console.log(userId);
     // let userId = userId;
 
     //send http request
     sendRequestLogin()
       .then(() => dispatch(login()))
-      .then(() => dispatch(updateId(userId)))
+      // .then(() => dispatch(updateId(userId)))
       .then(() => history("/dashboard"));
   };
 

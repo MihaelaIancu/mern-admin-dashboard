@@ -2,8 +2,6 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET_KEY = "MyKey";
-
 export const signup = async (req, res, next) => {
   const { name, email, password, phoneNumber } = req.body;
   let existingUser;
@@ -62,7 +60,7 @@ export const login = async (req, res, next) => {
     return res.status(400).json({ message: "Email/Password is invalid :(" });
   }
 
-  const token = jwt.sign({ id: existingUser._id }, JWT_SECRET_KEY, {
+  const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET_KEY, {
     expiresIn: "30s",
   });
 
@@ -90,7 +88,7 @@ export const verifyToken = async (req, res, next) => {
     return res.status(404).json({ message: "No token found :(" });
   }
 
-  jwt.verify(String(token), JWT_SECRET_KEY, (err, user) => {
+  jwt.verify(String(token), process.env.JWT_SECRET_KEY, (err, user) => {
     if (err) {
       return res.status(400).json({ message: "Invalid token :(" });
     }
@@ -122,6 +120,7 @@ export const getUser = async (req, res, next) => {
 export const logout = (req, res, next) => {
   const cookies = req.headers.cookie;
   const prevToken = cookies.split("=")[1];
+  console.log(prevToken);
   if (!prevToken) {
     return res.status(400).json({ message: "Couldn't find token" });
   }

@@ -9,7 +9,10 @@ import CustomColumnMenu from "components/DataGridCustomColumnMenu";
 const Performance = () => {
   const theme = useTheme();
   const userId = useSelector((state) => state.global.userId);
-  const { data, isLoading } = useGetUserPerformanceQuery(userId);
+  // const userId = "63701cc1f03239b7f700000e";
+  const { data, isLoading } = useGetUserPerformanceQuery(
+    "63701cc1f03239b7f700000e"
+  );
   console.log("data", data);
 
   const columns = [
