@@ -22,6 +22,7 @@ import {
   dataTransaction,
   dataOverallStat,
   dataAffiliateStat,
+  dataTransactionArray,
 } from "./data/index.js";
 import Product from "./models/Product.js";
 import ProductStat from "./models/ProductStat.js";
@@ -75,11 +76,20 @@ mongoose
 const con = mysql.createPool({
   host: "localhost",
   user: "root",
-  password: "root",
+  password: process.env.MYSQL_PASSW,
   database: "test",
 });
 
 con.getConnection(function (err) {
   if (err) throw err;
   console.log("MySQL is connected");
+
+  // con.query(
+  //   "INSERT INTO transactions (_id, userId, cost, products) VALUES ?",
+  //   [dataTransactionArray],
+  //   function (err) {
+  //     if (err) throw err;
+  //     console.log("Data has been inserted");
+  //   }
+  // );
 });
