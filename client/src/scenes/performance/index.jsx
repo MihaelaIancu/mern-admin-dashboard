@@ -1,19 +1,18 @@
 import React from "react";
 import { Box, useTheme } from "@mui/material";
 import { useGetUserPerformanceQuery } from "state/api";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 import Header from "components/Header";
 import CustomColumnMenu from "components/DataGridCustomColumnMenu";
 
 const Performance = () => {
   const theme = useTheme();
-  const userId = useSelector((state) => state.global.userId);
+  // const userId = useSelector((state) => state.global.userId);
   // const userId = "63701cc1f03239b7f700000e";
   const { data, isLoading } = useGetUserPerformanceQuery(
     "63701cc1f03239b7f700000e"
   );
-  console.log("data", data);
 
   const columns = [
     {

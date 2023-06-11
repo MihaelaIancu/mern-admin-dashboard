@@ -95,7 +95,6 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(inputs);
 
     //send http request
     sendRequest().then(() => history("/login"));
@@ -108,7 +107,7 @@ const Signup = () => {
       : setAdmins({ role: "admin" });
   };
 
-  const { admin, superadmin, user } = roles;
+  const { admin, superadmin } = roles;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -218,16 +217,6 @@ const Signup = () => {
                     />
                   }
                   label="superadmin"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={user}
-                      onChange={handleChange}
-                      name="user"
-                    />
-                  }
-                  label="user"
                 />
               </FormGroup>
             </FormControl>

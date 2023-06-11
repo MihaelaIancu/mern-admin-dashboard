@@ -6,17 +6,30 @@ import {
   GridToolbarContainer,
   GridToolbarExport,
   GridToolbarColumnsButton,
+  useGridApiContext,
+  gridPaginatedVisibleSortedGridRowIdsSelector,
 } from "@mui/x-data-grid";
 import FlexBetween from "./FlexBetween";
 
+const getRowsFromCurrentPage = ({ apiRef }) =>
+  gridPaginatedVisibleSortedGridRowIdsSelector(apiRef);
+
 const DataGridCustomToolbar = ({ searchInput, setSearchInput, setSearch }) => {
+
+  const apiRef = useGridApiContext();
+  const handleExport = (options) => apiRef.current.exportDataAsCsv(options);
+
   return (
     <GridToolbarContainer>
       <FlexBetween width="100%">
         <FlexBetween>
           <GridToolbarColumnsButton />
           <GridToolbarDensitySelector />
-          <GridToolbarExport />
+          <GridToolbarExport
+            onClick={() =>
+              handleExport({ getRowsToExport: getRowsFromCurrentPage })
+            }
+          />
         </FlexBetween>
       </FlexBetween>
       <TextField

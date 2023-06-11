@@ -21,7 +21,6 @@ const Transactions = () => {
     sort: JSON.stringify(sort),
     search,
   });
-  console.log("data", data);
 
   const columns = [
     {

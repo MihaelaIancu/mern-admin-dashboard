@@ -27,7 +27,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { logout } from "state";
 import axios from "axios";
-// import { logout } from "state";
 
 axios.defaults.withCredentials = true;
 
@@ -40,10 +39,6 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = (event) => setAnchorEl(null);
-  // const handleLogout = () => {
-  //   localStorage.removeItem("userId");
-  //   navigate("/");
-  // };
 
   const sendRequestLogout = async () => {
     const res = await axios.post("http://localhost:5001/auth/logout", null, {
@@ -59,7 +54,6 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
     sendRequestLogout()
       .then(() => dispatch(logout()))
       .then(() => history("/"));
-    console.log("logged out");
   };
 
   return (

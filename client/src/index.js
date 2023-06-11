@@ -3,16 +3,15 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { configureStore } from "@reduxjs/toolkit";
-import globalReducer from "state";
+import allReducers from "state";
 import { Provider } from "react-redux";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { api } from "state/api";
 
+// const rootReducer = combineReducers(allReducers);
+
 const store = configureStore({
-  reducer: {
-    global: globalReducer,
-    [api.reducerPath]: api.reducer,
-  },
+  reducer: allReducers,
   middleware: (getDefault) => getDefault().concat(api.middleware),
 });
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -43,12 +43,10 @@ const Login = () => {
   const history = useNavigate();
   const dispatch = useDispatch();
 
-  const [inputs, setInputs] = React.useState({
+  const [inputs, setInputs] = useState({
     email: "",
     password: "",
   });
-
-  // const [user, setUser] = React.useState("63701cc1f03239b7f700000e");
 
   const theme = useTheme();
 
@@ -68,35 +66,20 @@ const Login = () => {
       .catch((err) => console.log(err));
 
     const data = await res.data;
-    // let id = data.user._id;
-    // localStorage.setItem("userId", id);
 
     return data;
   };
 
-  // const sendRequestUser = async () => {
-  //   const res = await axios
-  //     .get("http://localhost:5001/auth/user", {
-  //       withCredentials: true,
-  //     })
-  //     .catch((err) => console.log(err));
-
-  //   const data = await res.data;
-  //   return data;
-  // };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("id to update ", localStorage.getItem("userId"));
-    // let userId = localStorage.getItem("userId");
-    // console.log(userId);
-    // let userId = userId;
 
     //send http request
     sendRequestLogin()
-      .then(() => dispatch(login()))
-      // .then(() => dispatch(updateId(userId)))
-      .then(() => history("/dashboard"));
+      .then((data) => {
+        const userId = data.user._id;
+        const userToken = data.token;
+        dispatch(login(userId, userToken));
+      }).then(() => history("/dashboard"));
   };
 
   return (

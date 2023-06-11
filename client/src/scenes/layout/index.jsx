@@ -1,17 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import { useGetUserQuery } from "state/api";
+import axios from "axios";
 
 const Layout = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const userId = useSelector((state) => state.global.userId);
+  const userId = useSelector((state) => state.auth.userId);
+  const userToken = useSelector((state) => state.auth.token);
   const { data } = useGetUserQuery(userId);
-  // console.log("data", data);
+
+  axios.defaults.withCredentials = true;
+  let firstRender = true;
+
+  const [updatedUserToken, setUpdatedUserToken] = useState({
+    updatedUserToken: "",
+  });
+
+  const refreshToken = async () => {
+    const res = await axios
+      .get("http://localhost:5001/auth/refresh", {
+        withCredentials: true,
+      })
+      .catch((err) => console.log(err));
+
+    const data = await res.data;
+    return data;
+  };
+
+  useEffect(() => {
+
+    if (firstRender) {
+      firstRender = false;
+      setUpdatedUserToken(userToken);
+    }
+
+    let interval = setInterval(() => {
+      refreshToken().then((data) => {
+        setUpdatedUserToken(data.token);
+      });
+    }, 1000 * 29);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Box display={isNonMobile ? "flex" : "block"} width="100%" height="100%">
