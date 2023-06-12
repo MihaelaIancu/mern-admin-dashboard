@@ -66,6 +66,7 @@ const Login = () => {
       .catch((err) => console.log(err));
 
     const data = await res.data;
+    console.log('data from login---> ', data);
 
     return data;
   };
@@ -78,6 +79,7 @@ const Login = () => {
       .then((data) => {
         const userId = data.user._id;
         const userToken = data.token;
+        console.log('data from login at request----> ', data);
         dispatch(login(userId, userToken));
       }).then(() => history("/dashboard"));
   };

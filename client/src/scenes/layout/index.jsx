@@ -22,18 +22,25 @@ const Layout = () => {
   });
 
   const refreshToken = async () => {
-    const res = await axios
-      .get("http://localhost:5001/auth/refresh", {
+    try {
+      const res = await axios.get("http://localhost:5001/auth/refresh", {
         withCredentials: true,
-      })
-      .catch((err) => console.log(err));
+      });
 
-    const data = await res.data;
-    return data;
+      if (res && res.status === 200) {
+        const data = await res.data;
+        console.log("data from refresh---> ", data);
+        return data;
+      } else {
+        throw new Error("Refresh token request failed.");
+      }
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   };
 
   useEffect(() => {
-
     if (firstRender) {
       firstRender = false;
       setUpdatedUserToken(userToken);
@@ -41,6 +48,7 @@ const Layout = () => {
 
     let interval = setInterval(() => {
       refreshToken().then((data) => {
+        console.log("data from refresh at call---> ", data);
         setUpdatedUserToken(data.token);
       });
     }, 1000 * 29);
