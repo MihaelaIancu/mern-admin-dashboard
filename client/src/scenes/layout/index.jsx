@@ -29,7 +29,6 @@ const Layout = () => {
 
       if (res && res.status === 200) {
         const data = await res.data;
-        console.log("data from refresh---> ", data);
         return data;
       } else {
         throw new Error("Refresh token request failed.");
@@ -48,7 +47,6 @@ const Layout = () => {
 
     let interval = setInterval(() => {
       refreshToken().then((data) => {
-        console.log("data from refresh at call---> ", data);
         setUpdatedUserToken(data.token);
       });
     }, 1000 * 29);

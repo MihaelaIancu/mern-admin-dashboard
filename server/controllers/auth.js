@@ -80,7 +80,6 @@ export const verifyToken = async (req, res, next) => {
   const cookies = req.headers.cookie;
   // console.log(cookies);
   const token = cookies.split("=")[1];
-  console.log('Token----> ', token);
   // const headers = req.headers[`authorization`];
   // const token = headers.split(" ")[1];
 
@@ -120,7 +119,7 @@ export const getUser = async (req, res, next) => {
 export const refreshToken = (req, res, next) => {
   const cookies = req.headers.cookie;
   const prevToken = cookies.split("=")[1];
-  console.log('prevToken----> ', prevToken);
+  
   if (!prevToken) {
     return res.status(400).json({ message: "Couldn't find token" });
   }
