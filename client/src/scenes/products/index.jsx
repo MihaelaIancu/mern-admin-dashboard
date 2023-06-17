@@ -11,8 +11,12 @@ import {
   useTheme,
   useMediaQuery,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useGetProductsQuery } from "state/api";
 import Header from "components/Header";
+import FlexBetween from "components/FlexBetween";
 
 const Product = ({
   _id,
@@ -70,12 +74,25 @@ const Product = ({
         <CardContent>
           <Typography>id: {_id}</Typography>
           <Typography>Supply Left: {supply}</Typography>
-          <Typography>
-            Yearly Sales This Year: {stat.yearlySalesTotal}
-          </Typography>
-          <Typography>
-            Yearly Units Sold This Year: {stat.yearlyTotalSoldUnits}
-          </Typography>
+          <Button
+            sx={{ color: theme.palette.secondary[500], marginTop: "15px" }}
+            variant="outlined"
+            startIcon={<DeleteIcon />}
+          >
+            Delete
+          </Button>
+          <Button
+            sx={{
+              color: theme.palette.secondary[100],
+              marginTop: "15px",
+              marginLeft: "15px",
+            }}
+            variant="outlined"
+            startIcon={<EditIcon />}
+            href={`/editProduct/${_id}`}
+          >
+            Edit
+          </Button>
         </CardContent>
       </Collapse>
     </Card>
@@ -85,10 +102,26 @@ const Product = ({
 const Products = () => {
   const { data, isLoading } = useGetProductsQuery();
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
+  const theme = useTheme();
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="PRODUCTS" subtitle="See your list of products" />
+      <FlexBetween>
+        <Header title="PRODUCTS" subtitle="See your list of products" />
+        <Button
+          sx={{
+            backgroundColor: theme.palette.secondary.light,
+            color: theme.palette.background.alt,
+            fontSize: "14px",
+            fontWeight: "bold",
+            padding: "10px 20px",
+          }}
+          href="/addProduct"
+          startIcon={<AddCircleIcon />}
+        >
+          Add a new product
+        </Button>
+      </FlexBetween>
       {data || !isLoading ? (
         <Box
           mt="20px"
@@ -97,7 +130,9 @@ const Products = () => {
           justifyContent="space-between"
           rowGap="20px"
           columnGap="1.33%"
-          sx={{ "& > div": { gridColumn: isNonMobile ? undefined : "span 4" } }}
+          sx={{
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+          }}
         >
           {data.map(
             ({
