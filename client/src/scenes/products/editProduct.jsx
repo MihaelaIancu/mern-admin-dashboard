@@ -26,7 +26,6 @@ import { useParams } from "react-router-dom";
 
 const EditProduct = () => {
   const { data, isLoading } = useGetProductsQuery();
-  console.log(data);
   const params = useParams();
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width: 700px)");
@@ -90,12 +89,13 @@ const EditProduct = () => {
                     value={name}
                     autoComplete="off"
                     name="name"
+                    type="text"
                     required
                     fullWidth
                     id="name"
                     label="Product Name"
                     autoFocus
-                    onChange={"change"}
+                    onChange={(e) => setName(e.target.value)}
                   />
                   <FormHelperText>Required</FormHelperText>
                 </Grid>
@@ -106,8 +106,9 @@ const EditProduct = () => {
                       labelId="category"
                       id="category"
                       value={category}
+                      type="text"
                       label="Category *"
-                      onChange={"change"}
+                      onChange={(e) => setCategory(e.target.value)}
                     >
                       <MenuItem value="">
                         <em>Choose a category</em>
@@ -130,7 +131,7 @@ const EditProduct = () => {
                     type="text"
                     id="description"
                     autoComplete="off"
-                    onChange={"change"}
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -145,7 +146,7 @@ const EditProduct = () => {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    onChange={"change"}
+                    onChange={(e) => setPrice(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -160,7 +161,7 @@ const EditProduct = () => {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    onChange={"change"}
+                    onChange={(e) => setSupply(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -173,6 +174,9 @@ const EditProduct = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: theme.palette.secondary.light }}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                }}
               >
                 Save your edits
               </Button>
