@@ -142,11 +142,13 @@ const EditProduct = () => {
                     label="Price"
                     name="price"
                     type="number"
-                    value={price}
+                    value={Number(price).toFixed(2)}
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    onChange={(e) => setPrice(e.target.value)}
+                    onChange={(e) =>
+                      setPrice(Number(e.target.value)).toFixed(2)
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Card,
@@ -27,9 +27,14 @@ const Product = ({
   category,
   supply,
   stat,
+  onDelete,
 }) => {
   const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const deleteProduct = () => {
+    onDelete(_id);
+  };
 
   return (
     <Card
@@ -78,6 +83,7 @@ const Product = ({
             sx={{ color: theme.palette.secondary[500], marginTop: "15px" }}
             variant="outlined"
             startIcon={<DeleteIcon />}
+            onClick={deleteProduct}
           >
             Delete
           </Button>
@@ -103,6 +109,18 @@ const Products = () => {
   const { data, isLoading } = useGetProductsQuery();
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const theme = useTheme();
+  const [products, setNewProducts] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setNewProducts(data);
+    }
+  }, [data]);
+
+  const handleDelete = (id) => {
+    const newProducts = products.filter((elem) => elem._id !== id);
+    setNewProducts(newProducts);
+  };
 
   return (
     <Box m="1.5rem 2.5rem">
@@ -134,7 +152,7 @@ const Products = () => {
             "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
           }}
         >
-          {data.map(
+          {products.map(
             ({
               _id,
               name,
@@ -155,6 +173,7 @@ const Products = () => {
                 category={category}
                 supply={supply}
                 stat={stat}
+                onDelete={handleDelete}
               />
             )
           )}
