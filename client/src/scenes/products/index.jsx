@@ -17,6 +17,8 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useGetProductsQuery } from "state/api";
 import Header from "components/Header";
 import FlexBetween from "components/FlexBetween";
+import "./index.css";
+import axios from "axios";
 
 const Product = ({
   _id,
@@ -76,29 +78,38 @@ const Product = ({
         unmountOnExit
         sx={{ color: theme.palette.neutral[300] }}
       >
-        <CardContent>
-          <Typography>id: {_id}</Typography>
-          <Typography>Supply Left: {supply}</Typography>
-          <Button
-            sx={{ color: theme.palette.secondary[500], marginTop: "15px" }}
-            variant="outlined"
-            startIcon={<DeleteIcon />}
-            onClick={deleteProduct}
-          >
-            Delete
-          </Button>
-          <Button
-            sx={{
-              color: theme.palette.secondary[100],
-              marginTop: "15px",
-              marginLeft: "15px",
-            }}
-            variant="outlined"
-            startIcon={<EditIcon />}
-            href={`/editProduct/${_id}`}
-          >
-            Edit
-          </Button>
+        <CardContent className="card-content-container">
+          <Box>
+            <Typography>id: {_id}</Typography>
+            <Typography>Supply Left: {supply}</Typography>
+            <Button
+              sx={{ color: theme.palette.secondary[500], marginTop: "15px" }}
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+              onClick={deleteProduct}
+            >
+              Delete
+            </Button>
+            <Button
+              sx={{
+                color: theme.palette.secondary[100],
+                marginTop: "15px",
+                marginLeft: "15px",
+              }}
+              variant="outlined"
+              startIcon={<EditIcon />}
+              href={`/editProduct/${_id}`}
+            >
+              Edit
+            </Button>
+          </Box>
+          <Box className="product-image">
+            <img
+              src="https://unsplash.com/photos/g5f0BJq-FRs/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjg3ODIxNDM5fA&force=true&w=640"
+              alt="product-preview"
+              width="100px"
+            />
+          </Box>
         </CardContent>
       </Collapse>
     </Card>
@@ -110,6 +121,7 @@ const Products = () => {
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const theme = useTheme();
   const [products, setNewProducts] = useState([]);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -117,9 +129,23 @@ const Products = () => {
     }
   }, [data]);
 
-  const handleDelete = (id) => {
-    const newProducts = products.filter((elem) => elem._id !== id);
-    setNewProducts(newProducts);
+  const handleDelete = async (id) => {
+    try {
+      setIsDeleting(true);
+      const response = await axios.delete(
+        `http://localhost:5001/client/products/${id}`
+      );
+      if (response.status === 200) {
+        const newProducts = products.filter((elem) => elem._id !== id);
+        setNewProducts(newProducts);
+      } else {
+        console.log("Could not delete the product");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (

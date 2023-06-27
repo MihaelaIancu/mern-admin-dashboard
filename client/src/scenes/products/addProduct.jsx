@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Button,
@@ -21,10 +21,58 @@ import Header from "components/Header";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import FlexBetween from "components/FlexBetween";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width: 700px)");
+  const history = useNavigate();
+
+  const [product, setProduct] = useState({
+    name: "",
+    description: "",
+    price: 0,
+    rating: 0,
+    category: "",
+    supply: 0,
+  });
+
+  const handleChange = (e) => {
+    setProduct({...product, [e.target.name]: e.target.value });
+  };
+
+  const sendRequest = async () => {
+    const res = await axios
+      .post("http://localhost:5001/client/addProduct", {
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        rating: 0,
+        category: product.category,
+        supply: product.supply,
+      })
+      .catch((err) => console.log(err));
+
+    const data = await res.data;
+
+    return data;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setProduct({
+      name: "",
+      description: "",
+      price: 0,
+      rating: 0,
+      category: "",
+      supply: 0,
+    });
+
+    sendRequest().then(() => history("/products"));
+  };
 
   return (
     <Box m="1.5rem 3.5rem">
@@ -54,11 +102,16 @@ const AddProduct = () => {
           >
             Product Details
           </Typography>
-          <Box component="form" noValidate onSubmit={"submit"} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  value="test"
+                  value={product.name}
                   autoComplete="off"
                   name="name"
                   required
@@ -66,7 +119,7 @@ const AddProduct = () => {
                   id="name"
                   label="Product Name"
                   autoFocus
-                  onChange={"change"}
+                  onChange={handleChange}
                 />
                 <FormHelperText>Required</FormHelperText>
               </Grid>
@@ -75,12 +128,13 @@ const AddProduct = () => {
                   <InputLabel id="category">Category</InputLabel>
                   <Select
                     labelId="category"
+                    name="category"
                     id="category"
-                    value="test"
+                    value={product.category}
                     label="Category *"
-                    onChange={"change"}
+                    onChange={handleChange}
                   >
-                    <MenuItem value="">
+                    <MenuItem value="default">
                       <em>Choose a category</em>
                     </MenuItem>
                     <MenuItem value="shoes">Shoes</MenuItem>
@@ -95,13 +149,13 @@ const AddProduct = () => {
                 <TextField
                   required
                   fullWidth
-                  value="test"
+                  value={product.description}
                   name="description"
                   label="Description"
                   type="text"
                   id="description"
                   autoComplete="off"
-                  onChange={"change"}
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -112,10 +166,11 @@ const AddProduct = () => {
                   label="Price"
                   name="price"
                   type="number"
+                  value={product.price}
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  onChange={"change"}
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -126,15 +181,16 @@ const AddProduct = () => {
                   type="number"
                   label="Supply"
                   name="supply"
+                  value={product.supply}
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  onChange={"change"}
+                  onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
                 <Typography component="legend">Disabled</Typography>
-                <Rating name="disabled" value={"2"} disabled />
+                <Rating name="disabled" value={product.rating} disabled />
               </Grid>
             </Grid>
             <Button

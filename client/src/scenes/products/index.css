@@ -1,0 +1,12 @@
+.card-content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}

@@ -27,6 +27,66 @@ export const getProducts = async (req, res) => {
   }
 };
 
+export const addProduct = async (req, res, next) => {
+  const { name, description, price, rating, category, supply } = req.body;
+
+  const product = new Product({
+    name,
+    description,
+    price,
+    rating,
+    category,
+    supply,
+  });
+
+  try {
+    await product.save();
+  } catch (error) {
+    console.log(err);
+    res.status(400).json({ message: err.message });
+  }
+
+  return res.status(201).json({ message: product });
+};
+
+export const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  const deletedProduct = await Product.findByIdAndDelete(id);
+
+  if (!deletedProduct) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+
+  res.status(200).json({ message: "Product deleted successfully" });
+};
+
+export const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const { name, description, price, rating, category, supply } = req.body;
+  try {
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found!" });
+    }
+
+    product.name = name;
+    product.category = category;
+    product.supply = supply;
+    product.price = price;
+    product.description = description;
+    product.rating = rating;
+
+    const updatedProduct = await product.save();
+
+    res.status(200).json({ message: "Product updated successfully", product });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 export const getCustomers = async (req, res) => {
   try {
     const customers = await User.find({ role: "user" }).select("-password");
