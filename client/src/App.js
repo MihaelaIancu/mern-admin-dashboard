@@ -21,6 +21,7 @@ import Signup from "components/Signup";
 import Home from "scenes/home";
 import AddProduct from "scenes/products/addProduct";
 import EditProduct from "scenes/products/editProduct";
+import SortedProducts from "scenes/breakdown/sortProducts";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -46,6 +47,7 @@ function App() {
                 <Route path="/performance" element={<Performance />} />
                 <Route path="/addProduct" element={<AddProduct />} />
                 <Route path="/editProduct/:id" element={<EditProduct />} />
+                <Route path="/categories/:category" element={<SortedProducts />} />
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />

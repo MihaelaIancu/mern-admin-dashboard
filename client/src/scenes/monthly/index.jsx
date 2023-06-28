@@ -66,24 +66,31 @@ const Monthly = () => {
     return [formattedData];
   }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const totalSalesData = formattedData[0]?.id === "totalSales";
-  const totalUnitsData = formattedData[1]?.id === "totalUnits";
+  // const totalSalesData = formattedData[0]?.id === "totalSales";
+  // const totalUnitsData = formattedData[1]?.id === "totalUnits";
 
-  const handleOpenModal = (point, totalSalesData) => {
+  const handleOpenModal = (point) => {
     const { x: month, y: currentValue } = point.data;
 
     const currentLine = formattedData.find((line) => line.id === point.serieId);
-    const currentMonthIndex = formattedData[0].data.findIndex((elem) => elem.x === month);
+    const currentMonthIndex = formattedData[0].data.findIndex(
+      (elem) => elem.x === month
+    );
     const previousMonthIndex = (currentMonthIndex - 1 + 12) % 12;
     const previousMonthData = formattedData[0].data[previousMonthIndex];
     const previousValue = previousMonthData ? previousMonthData.y : 0;
 
     const difference = currentValue - previousValue;
-    const percentDiff = ((difference / previousValue)).toFixed(2);
-    
-    const message = currentLine.id === "totalSales"
-      ? `${Math.abs(percentDiff)}% ${difference > 0 ? "more" : "less"} sales this month!`
-      : `${Math.abs(percentDiff)}% ${difference > 0 ? "more" : "less"} units sold this month!`;
+    const percentDiff = (difference / previousValue).toFixed(2);
+
+    const message =
+      currentLine.id === "totalSales"
+        ? `${Math.abs(percentDiff)}% ${
+            difference > 0 ? "more" : "less"
+          } sales this month!`
+        : `${Math.abs(percentDiff)}% ${
+            difference > 0 ? "more" : "less"
+          } units sold this month!`;
 
     if (currentLine.id === "totalSales") {
       setSalesModalMessage(message);
@@ -168,7 +175,7 @@ const Monthly = () => {
               legendOffset: -50,
               legendPosition: "middle",
             }}
-            onClick={(point) => handleOpenModal(point, totalSalesData)}
+            onClick={(point) => handleOpenModal(point)}
             enableGridX={false}
             enableGridY={false}
             pointSize={10}

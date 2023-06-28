@@ -2,10 +2,12 @@ import React from "react";
 import { ResponsivePie } from "@nivo/pie";
 import { Box, Typography, useTheme } from "@mui/material";
 import { useGetSalesQuery } from "state/api";
+import { useNavigate } from "react-router-dom";
 
 const BreakdownChart = ({ isDashboard = false }) => {
   const { data, isLoading } = useGetSalesQuery();
   const theme = useTheme();
+  const navigate = useNavigate();
 
   if (!data || isLoading) return "Loading...";
   const colors = [
@@ -22,6 +24,11 @@ const BreakdownChart = ({ isDashboard = false }) => {
       color: colors[i],
     })
   );
+
+  const handleCategoryClick = (category) => {
+    navigate(`/categories/${category}`);
+  };
+
   return (
     <Box
       height={isDashboard ? "400px" : "100%"}
@@ -32,6 +39,7 @@ const BreakdownChart = ({ isDashboard = false }) => {
     >
       <ResponsivePie
         data={formattedData}
+        onClick={(data) => handleCategoryClick(data.id)}
         theme={{
           axis: {
             domain: {
