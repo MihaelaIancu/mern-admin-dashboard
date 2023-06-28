@@ -27,7 +27,7 @@ import { useNavigate } from "react-router-dom";
 const AddProduct = () => {
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width: 700px)");
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const [product, setProduct] = useState({
     name: "",
@@ -71,8 +71,12 @@ const AddProduct = () => {
       supply: 0,
     });
 
-    sendRequest().then(() => history("/products"));
+    sendRequest().then(() => navigate("/products"));
   };
+
+  const handleClick = () => {
+  navigate("/products");
+  }
 
   return (
     <Box m="1.5rem 3.5rem">
@@ -206,7 +210,7 @@ const AddProduct = () => {
                 sx={{ color: theme.palette.secondary[500], marginTop: "15px" }}
                 variant="outlined"
                 startIcon={<ArrowBackOutlinedIcon />}
-                href="/products"
+                onClick={handleClick}
               >
                 Go back
               </Button>

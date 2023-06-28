@@ -135,8 +135,8 @@ const BreakdownChart = ({ isDashboard = false }) => {
             : "translate(-50%, -100%)",
         }}
       >
-        <Typography variant="h6">
-          {isDashboard && "Total: "} ${data.yearlySalesTotal}
+        <Typography variant={isDashboard ? "h6" : "h4"} sx={{marginLeft: isDashboard ? "20px" : ""}}>
+          {"Total: "} ${data.yearlySalesTotal}
         </Typography>
       </Box>
     </Box>

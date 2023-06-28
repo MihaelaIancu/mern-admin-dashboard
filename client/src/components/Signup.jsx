@@ -41,7 +41,7 @@ function Copyright(props) {
 }
 
 const Signup = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const [roles, setRoles] = React.useState({
     admin: true,
@@ -97,7 +97,7 @@ const Signup = () => {
     e.preventDefault();
 
     //send http request
-    sendRequest().then(() => history("/login"));
+    sendRequest().then(() => navigate("/login"));
   };
 
   const handleRoles = () => {

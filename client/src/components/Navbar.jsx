@@ -32,7 +32,7 @@ axios.defaults.withCredentials = true;
 
 const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const dispatch = useDispatch();
-  const history = useNavigate();
+  const navigate = useNavigate();
   const theme = useTheme();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -53,7 +53,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const handleLogout = () => {
     sendRequestLogout()
       .then(() => dispatch(logout()))
-      .then(() => history("/"));
+      .then(() => navigate("/"));
   };
 
   return (

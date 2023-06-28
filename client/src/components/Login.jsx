@@ -40,7 +40,7 @@ function Copyright(props) {
 }
 
 const Login = () => {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [inputs, setInputs] = useState({
@@ -79,7 +79,7 @@ const Login = () => {
         const userId = data.user._id;
         const userToken = data.token;
         dispatch(login(userId, userToken));
-      }).then(() => history("/dashboard"));
+      }).then(() => navigate("/dashboard"));
   };
 
   return (

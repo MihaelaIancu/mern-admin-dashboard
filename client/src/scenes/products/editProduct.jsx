@@ -23,6 +23,8 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import FlexBetween from "components/FlexBetween";
 import { useGetProductsQuery } from "state/api";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const EditProduct = () => {
   const { data, isLoading } = useGetProductsQuery();
@@ -30,6 +32,7 @@ const EditProduct = () => {
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width: 700px)");
   const product = data?.find((elem) => elem._id === params.id);
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
@@ -37,6 +40,8 @@ const EditProduct = () => {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [rating, setRating] = useState("");
+
+  const { refetch } = useGetProductsQuery();
 
   useEffect(() => {
     if (product) {
@@ -48,6 +53,49 @@ const EditProduct = () => {
       setDescription(product.description);
     }
   }, [product]);
+
+  const sendRequest = async () => {
+    try {
+      const response = await axios.put(`http://localhost:5001/client/editProduct/${params.id}`, {
+        name,
+        description,
+        price,
+        rating,
+        category,
+        supply,
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const updatedData = await sendRequest();
+      const newProduct = {...product, ...updatedData}
+
+      setName(newProduct.name);
+      setCategory(newProduct.category);
+      setSupply(newProduct.supply);
+      setPrice(newProduct.price);
+      setRating(newProduct.rating);
+      setDescription(newProduct.description);
+
+      refetch();
+
+      navigate("/products");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleClick = () => {
+    navigate("/products");
+  };
 
   if (isLoading) {
     return <Box sx={{ m: "15px" }}>Loading...</Box>;
@@ -82,7 +130,12 @@ const EditProduct = () => {
             >
               Product Details
             </Typography>
-            <Box component="form" noValidate onSubmit={"submit"} sx={{ mt: 3 }}>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 3 }}
+            >
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -142,12 +195,12 @@ const EditProduct = () => {
                     label="Price"
                     name="price"
                     type="number"
-                    value={Number(price).toFixed(2)}
+                    value={price}
                     InputLabelProps={{
                       shrink: true,
                     }}
                     onChange={(e) =>
-                      setPrice(Number(e.target.value)).toFixed(2)
+                      setPrice(e.target.value)
                     }
                   />
                 </Grid>
@@ -176,9 +229,6 @@ const EditProduct = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: theme.palette.secondary.light }}
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
               >
                 Save your edits
               </Button>
@@ -190,7 +240,7 @@ const EditProduct = () => {
                   }}
                   variant="outlined"
                   startIcon={<ArrowBackOutlinedIcon />}
-                  href="/products"
+                  onClick={handleClick}
                 >
                   Go back
                 </Button>

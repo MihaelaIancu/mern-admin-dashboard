@@ -19,6 +19,7 @@ import Header from "components/Header";
 import FlexBetween from "components/FlexBetween";
 import "./index.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Product = ({
   _id,
@@ -30,13 +31,19 @@ const Product = ({
   supply,
   stat,
   onDelete,
+  onEdit,
 }) => {
   const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
 
   const deleteProduct = () => {
     onDelete(_id);
   };
+
+  const handleClickEdit = () => {
+    onEdit(_id);
+  }
 
   return (
     <Card
@@ -98,7 +105,7 @@ const Product = ({
               }}
               variant="outlined"
               startIcon={<EditIcon />}
-              href={`/editProduct/${_id}`}
+              onClick={(data) => handleClickEdit(data.id)}
             >
               Edit
             </Button>
@@ -122,6 +129,7 @@ const Products = () => {
   const theme = useTheme();
   const [products, setNewProducts] = useState([]);
   const [isDeleting, setIsDeleting] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -148,6 +156,14 @@ const Products = () => {
     }
   };
 
+  const handleClickAdd = () => {
+    navigate("/addProduct");
+  };
+
+  const handleEdit = (id) => {
+    navigate(`/editProduct/${id}`);
+  }
+
   return (
     <Box m="1.5rem 2.5rem">
       <FlexBetween>
@@ -160,7 +176,7 @@ const Products = () => {
             fontWeight: "bold",
             padding: "10px 20px",
           }}
-          href="/addProduct"
+          onClick={handleClickAdd}
           startIcon={<AddCircleIcon />}
         >
           Add a new product
@@ -200,6 +216,7 @@ const Products = () => {
                 supply={supply}
                 stat={stat}
                 onDelete={handleDelete}
+                onEdit={handleEdit}
               />
             )
           )}

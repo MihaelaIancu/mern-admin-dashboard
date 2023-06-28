@@ -17,6 +17,6 @@ router.get("/transactions", getTransactions);
 router.get("/geography", getGeography);
 router.post("/addProduct", addProduct);
 router.delete("/products/:id", deleteProduct);
-router.put("/products/:id", updateProduct);
+router.put("/editProduct/:id", updateProduct);
 
 export default router;
