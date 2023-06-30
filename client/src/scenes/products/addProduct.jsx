@@ -23,6 +23,7 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 import FlexBetween from "components/FlexBetween";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useGetProductsQuery } from "state/api";
 
 const AddProduct = () => {
   const theme = useTheme();
@@ -37,6 +38,8 @@ const AddProduct = () => {
     category: "",
     supply: 0,
   });
+
+  const { refetch } = useGetProductsQuery();
 
   const handleChange = (e) => {
     setProduct({...product, [e.target.name]: e.target.value });
@@ -71,7 +74,9 @@ const AddProduct = () => {
       supply: 0,
     });
 
-    sendRequest().then(() => navigate("/products"));
+    sendRequest()
+      .then(() => refetch())
+      .then(() => navigate("/products"));
   };
 
   const handleClick = () => {

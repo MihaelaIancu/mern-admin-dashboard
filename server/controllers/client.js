@@ -4,6 +4,7 @@ import ProductStat from "../models/ProductStat.js";
 import User from "../models/User.js";
 import Transaction from "../models/Transaction.js";
 import getCountryIso3 from "country-iso-2-to-3";
+import mongoose from "mongoose";
 
 export const getProducts = async (req, res) => {
   try {
@@ -80,7 +81,9 @@ export const updateProduct = async (req, res) => {
 
     const updatedProduct = await product.save();
 
-    res.status(200).json({ message: "Product updated successfully", product });
+    res
+      .status(200)
+      .json({ message: "Product updated successfully", updatedProduct });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Server error" });
@@ -160,3 +163,4 @@ export const getGeography = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+

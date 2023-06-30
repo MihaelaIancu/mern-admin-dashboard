@@ -43,7 +43,7 @@ const Product = ({
 
   const handleClickEdit = () => {
     onEdit(_id);
-  }
+  };
 
   return (
     <Card
@@ -133,7 +133,12 @@ const Products = () => {
 
   useEffect(() => {
     if (data) {
-      setNewProducts(data);
+      const sortedProducts = data.slice().sort((a, b) => {
+        if (a.category < b.category) return -1;
+        if (a.category > b.category) return 1;
+        return 0;
+      });
+      setNewProducts(sortedProducts);
     }
   }, [data]);
 
@@ -162,7 +167,7 @@ const Products = () => {
 
   const handleEdit = (id) => {
     navigate(`/editProduct/${id}`);
-  }
+  };
 
   return (
     <Box m="1.5rem 2.5rem">
