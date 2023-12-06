@@ -73,16 +73,16 @@ mongoose
   .catch((error) => console.log(`${error} did not connect`));
 
 // MYSQL SETUP
-const con = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: process.env.MYSQL_PASSW,
-  database: "test",
-});
+// const con = mysql.createPool({
+//   host: "localhost",
+//   user: "root",
+//   password: process.env.MYSQL_PASSW,
+//   database: "test",
+// });
 
-con.getConnection(function (err) {
-  if (err) throw err;
-  console.log("MySQL is connected");
+// con.getConnection(function (err) {
+//   if (err) throw err;
+//   console.log("MySQL is connected");
 
   // con.query(
   //   "INSERT INTO transactions (_id, userId, cost, products) VALUES ?",
@@ -92,4 +92,4 @@ con.getConnection(function (err) {
   //     console.log("Data has been inserted");
   //   }
   // );
-});
+// });
