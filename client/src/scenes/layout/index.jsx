@@ -23,9 +23,12 @@ const Layout = () => {
 
   const refreshToken = async () => {
     try {
-      const res = await axios.get("http://localhost:5001/auth/refresh", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        "https://mern-admin-server.onrender.com/auth/refresh",
+        {
+          withCredentials: true,
+        }
+      );
 
       if (res && res.status === 200) {
         const data = await res.data;

@@ -59,7 +59,7 @@ const Login = () => {
 
   const sendRequestLogin = async () => {
     const res = await axios
-      .post("http://localhost:5001/auth/login", {
+      .post("https://mern-admin-server.onrender.com/auth/login", {
         email: inputs.email,
         password: inputs.password,
       })

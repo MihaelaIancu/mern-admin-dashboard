@@ -47,7 +47,7 @@ const AddProduct = () => {
 
   const sendRequest = async () => {
     const res = await axios
-      .post("http://localhost:5001/client/addProduct", {
+      .post("https://mern-admin-server.onrender.com/client/addProduct", {
         name: product.name,
         description: product.description,
         price: product.price,

@@ -146,7 +146,7 @@ const Products = () => {
     try {
       setIsDeleting(true);
       const response = await axios.delete(
-        `http://localhost:5001/client/products/${id}`
+        `https://mern-admin-server.onrender.com/client/products/${id}`
       );
       if (response.status === 200) {
         const newProducts = products.filter((elem) => elem._id !== id);

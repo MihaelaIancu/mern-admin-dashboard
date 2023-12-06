@@ -56,14 +56,17 @@ const EditProduct = () => {
 
   const sendRequest = async () => {
     try {
-      const response = await axios.put(`http://localhost:5001/client/editProduct/${params.id}`, {
-        name,
-        description,
-        price,
-        rating,
-        category,
-        supply,
-      });
+      const response = await axios.put(
+        `https://mern-admin-server.onrender.com/client/editProduct/${params.id}`,
+        {
+          name,
+          description,
+          price,
+          rating,
+          category,
+          supply,
+        }
+      );
       return response.data;
     } catch (error) {
       console.log(error);

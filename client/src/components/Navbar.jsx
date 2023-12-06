@@ -41,9 +41,13 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen }) => {
   const handleClose = (event) => setAnchorEl(null);
 
   const sendRequestLogout = async () => {
-    const res = await axios.post("http://localhost:5001/auth/logout", null, {
-      withCredentials: true,
-    });
+    const res = await axios.post(
+      "https://mern-admin-server.onrender.com/auth/logout",
+      null,
+      {
+        withCredentials: true,
+      }
+    );
     if (res.status === 200) {
       return res;
     }
