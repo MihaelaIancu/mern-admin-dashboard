@@ -35,7 +35,6 @@ const Product = ({
 }) => {
   const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(false);
-  const navigate = useNavigate();
 
   const deleteProduct = () => {
     onDelete(_id);

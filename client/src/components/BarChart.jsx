@@ -16,7 +16,7 @@ const BarChart = (props) => {
 
       setProducts(filteredProducts);
     }
-  }, [data]);
+  }, [data, props.category]);
 
   const [formattedData] = useMemo(() => {
     if (!data) return [];

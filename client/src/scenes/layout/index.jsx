@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -15,7 +15,7 @@ const Layout = () => {
   const { data } = useGetUserQuery(userId);
 
   axios.defaults.withCredentials = true;
-  let firstRender = true;
+  let firstRender = useRef();
 
   const [updatedUserToken, setUpdatedUserToken] = useState({
     updatedUserToken: "",
@@ -43,8 +43,8 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    if (firstRender) {
-      firstRender = false;
+    if (firstRender.current) {
+      firstRender.current = false;
       setUpdatedUserToken(userToken);
     }
 
@@ -54,7 +54,7 @@ const Layout = () => {
       });
     }, 1000 * 29);
     return () => clearInterval(interval);
-  }, []);
+  }, [userToken]);
 
   return (
     <Box display={isNonMobile ? "flex" : "block"} width="100%" height="100%">
