@@ -40,12 +40,12 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(
-  cors({
-    credentials: true,
-    origin: "https://mern-admin-client-k3kn.onrender.com",
-  })
-);
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: "https://mern-admin-client-k3kn.onrender.com",
+//   })
+// );
 
 // ROUTES
 app.use("/client", clientRoutes);
@@ -89,12 +89,12 @@ mongoose
 //   if (err) throw err;
 //   console.log("MySQL is connected");
 
-  // con.query(
-  //   "INSERT INTO transactions (_id, userId, cost, products) VALUES ?",
-  //   [dataTransactionArray],
-  //   function (err) {
-  //     if (err) throw err;
-  //     console.log("Data has been inserted");
-  //   }
-  // );
+// con.query(
+//   "INSERT INTO transactions (_id, userId, cost, products) VALUES ?",
+//   [dataTransactionArray],
+//   function (err) {
+//     if (err) throw err;
+//     console.log("Data has been inserted");
+//   }
+// );
 // });
